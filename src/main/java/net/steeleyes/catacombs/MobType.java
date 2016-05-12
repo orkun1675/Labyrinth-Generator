@@ -19,9 +19,10 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
-import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
+
+import java.util.List;
 //  ZOMBIE        (CreatureType.ZOMBIE,50),
 //  SKELETON      (CreatureType.SKELETON,40),
 //  CREEPER       (CreatureType.CREEPER,6),
@@ -40,7 +41,7 @@ import org.bukkit.entity.LivingEntity;
 //  SQUID         (CreatureType.SQUID,20),
 //  SHEEP         (CreatureType.SHEEP,20),
 //  PIG           (CreatureType.PIG,25),
-//  
+//
 //  // Special creatures
 //  POWEREDCREEPER(CreatureType.CREEPER,12);
 
@@ -50,14 +51,11 @@ public class MobType {
   private MobShape shape;
   private List<CatAbility> abilities;
   private List<CatLootList> loot;
-  private String gold;
-  private int speed = 20;
-  
-  public MobType(String name,String shape,int hps,String gold,List<CatAbility> abilities,List<CatLootList> loot) {
+
+    public MobType(String name, String shape, int hps, List<CatAbility> abilities, List<CatLootList> loot) {
     this.name = name;
     this.shape = CatUtils.getEnumFromString(MobShape.class, shape);
     this.hps = hps;
-    this.gold = gold;
     this.abilities = abilities;
     this.loot = loot;
   }
@@ -71,44 +69,8 @@ public class MobType {
     return shape.spawn(loc.getWorld(),loc);
   }
   
-  public LivingEntity spawn(LivingEntity e) {
-    return shape.spawn(e);
-  }
-  
-  public List<CatAbility> getAbilities() {
-    return abilities;
-  }
-
-  public void setAbilities(List<CatAbility> abilities) {
-    this.abilities = abilities;
-  }
-
-  public int getSpeed() {
-    return speed;
-  }
-  
-  public String getGold() {
-    return gold;
-  }
-
-  public void setGold(String gold) {
-    this.gold = gold;
-  }
-
   public int getHps() {
     return hps;
-  }
-
-  public void setHps(int hps) {
-    this.hps = hps;
-  }
-
-  public List<CatLootList> getLoot() {
-    return loot;
-  }
-
-  public void setLoot(List<CatLootList> loot) {
-    this.loot = loot;
   }
 
   public String getName() {
@@ -122,10 +84,4 @@ public class MobType {
   public MobShape getShape() {
     return shape;
   }
-
-  public void setShape(MobShape shape) {
-    this.shape = shape;
-  }
-  
-  
 }

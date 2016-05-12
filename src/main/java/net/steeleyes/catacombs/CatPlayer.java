@@ -25,10 +25,6 @@ import org.bukkit.entity.Player;
 public class CatPlayer {
   Player player;
   Location respawn = null;
-  // Hit timer
-  // Doing splash threat?
-  // threat weapon? how much threat
-  // List of monsters on threat table for
   
   public CatPlayer(Player player) {
     this.player = player;

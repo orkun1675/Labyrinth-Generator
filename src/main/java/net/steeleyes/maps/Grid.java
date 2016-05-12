@@ -58,7 +58,8 @@ public class Grid {
     }
   }
 
-  public Grid(Grid g,Direction dir) {  // Clone and rotate
+  @SuppressWarnings("incomplete-switch")
+public Grid(Grid g,Direction dir) {  // Clone and rotate
     this((dir.vertical())?g.size.x:g.size.y,(dir.vertical())?g.size.y:g.size.x);
 
     for(int x=0;x<size.x;x++) {

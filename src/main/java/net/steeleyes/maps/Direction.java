@@ -21,6 +21,7 @@ package net.steeleyes.maps;
 
 import java.util.Random;
 
+@SuppressWarnings("incomplete-switch")
 public enum Direction {
   EAST,SOUTH,WEST,NORTH,NORTH_EAST,NORTH_WEST,SOUTH_EAST,SOUTH_WEST,ANY;
   

@@ -20,10 +20,12 @@
 
 package net.steeleyes.catacombs;
 
-import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 
 public class BlockChange {
@@ -31,7 +33,7 @@ public class BlockChange {
   private Material mat;
   private byte code=-1;
   private List<ItemStack> items = null;
-  private String spawner = null;
+  private EntityType spawner = null;
   private String[] line = null;
   
   public BlockChange(Block blk, Material mat) {
@@ -67,11 +69,11 @@ public class BlockChange {
     return mat;
   }
 
-  public String getSpawner() {
+  public EntityType getSpawner() {
     return spawner;
   }
 
-  public void setSpawner(String spawner) {
+  public void setSpawner(EntityType spawner) {
     this.spawner = spawner;
   }
 
@@ -84,18 +86,12 @@ public class BlockChange {
   }
   
   public void setLine(int i, String str) {
-    if(line==null) {
-      line = new String[4];
-    }
-    if(i>=0 && i<=3) {
-      line[i] = str;
-    }
+    if(line==null) line = new String[4];
+    if(i>=0 && i<=3) line[i] = str;
   }
   
   public String getLine(int i) {
-    if(line!=null && i>=0 && i<=3) {
-      return line[i];
-    }
+    if(line!=null && i>=0 && i<=3) return line[i];
     return null;
   } 
   

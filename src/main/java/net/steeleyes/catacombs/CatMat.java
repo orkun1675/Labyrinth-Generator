@@ -19,128 +19,112 @@
 */
 package net.steeleyes.catacombs;
 
-import org.bukkit.block.Block;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
+@SuppressWarnings("deprecation")
 public class CatMat {
-  private Material mat;
-  private byte code = 0;
-  private Boolean has_code = false;
-  
-  // TODO: Add creator function from Strings like this 'smooth_brick:2'
-  
-  public CatMat(Material mat) {
-    this.mat = mat;
-  }
-  
-  public CatMat(Block blk) {
-    this.mat = blk.getType();
-    if(blk.getData()>0) {
-      this.code = blk.getData();
-      has_code = true;
-    }
-  }
-  
-  public CatMat(Material mat, byte code) {
-    this.mat = mat;
-    this.code = code;
-    has_code = true;
-  } 
+    private Material mat;
+    private byte code = 0;
+    private Boolean hasCode = false;
 
-  static public CatMat parseMaterial(String orig) {
-    CatMat m = null;
-    String name = orig;
-    byte code = -1;
-    if(name.contains(":")) {
-      String tmp[] = name.split(":");
-      name = tmp[0];
-      try {
-        code = Byte.parseByte(tmp[1]);
-      } catch(Exception e) {
-        System.err.println("[Catacombs] Unknown material '"+orig+"' invalid data byte, expecting a number");
-        return null;
-      }
+    public CatMat(Material mat) {
+        this.mat = mat;
     }
-    Material mat = Material.matchMaterial(name);
-    if(mat == null || !mat.isBlock()) {
-      System.err.println("[Catacombs] Invalid block material '"+orig+"'");
-      return null;
-    }
-    if(code>=0)
-      return new CatMat(mat,code);
-    return new CatMat(mat);
-  }   
-  //public CatMat dup() {
-  //  if(has_code)
-  //    return new CatMat(mat,code);
-  //  return new CatMat(mat);
-  //}
-  
-  @Override
-  public String toString() {
-    if(has_code)
-      return mat.toString()+":"+code;
-    return mat.toString();
-  }
-  
-  public Boolean equals(CatMat that) {
-    if(that == null) return false;
-    if(this.has_code || that.has_code) {
-      return this.mat == that.mat && this.code == that.code;
-    }
-    return this.mat == that.mat;
-  }
-  
-  public Boolean equals(Block blk) {
-    if(this.has_code || blk.getData()> 0) {
-      return this.mat == blk.getType() && this.code == blk.getData();
-    }
-    return this.mat == blk.getType();
-  }
-  
-  public Boolean is(Material that) {
-    if(this.has_code) {
-      return false;
-    }
-    return this.mat == that;
-  } 
-  public void setBlock(Block blk) {
-    if(this.has_code)
-      blk.setTypeIdAndData(mat.getId(), this.code, false);
-    else
-      blk.setType(mat);
-  }
 
-  public void getBlock(Block blk) {
-    Material m = blk.getType();
-    byte c = blk.getData();
-    if(c> 0) {
-      code = c;
-      has_code = true;
-    } else {
-      code = -1;
-      has_code = false;
+    public CatMat(Block blk) {
+        this.mat = blk.getType();
+        if (blk.getData() > 0) {
+            this.code = blk.getData();
+            hasCode = true;
+        }
     }
-    mat = m;
-  }
-  
-  public void get(CatMat that) {
-    has_code=that.has_code;
-    mat=that.mat;
-    code=that.code;
-  }
-  
-  public byte getCode() {
-    return code;
-  }
 
-  public Boolean getHas_code() {
-    return has_code;
-  }
+    public CatMat(Material mat, byte code) {
+        this.mat = mat;
+        this.code = code;
+        hasCode = true;
+    }
 
-  public Material getMat() {
-    return mat;
-  }
-  
-  
+    @SuppressWarnings("unused")
+    static public CatMat parseMaterial(String orig) {
+        CatMat m = null;
+        String name = orig;
+        byte code = -1;
+        if (name.contains(":")) {
+            String tmp[] = name.split(":");
+            name = tmp[0];
+            try {
+                code = Byte.parseByte(tmp[1]);
+            } catch (Exception e) {
+                System.err.println("[Catacombs] Unknown material '" + orig + "' invalid data byte, expecting a number");
+                return null;
+            }
+        }
+        Material mat = Material.matchMaterial(name);
+        if (mat == null || !mat.isBlock()) {
+            System.err.println("[Catacombs] Invalid block material '" + orig + "'");
+            return null;
+        }
+        if (code >= 0) return new CatMat(mat, code);
+        return new CatMat(mat);
+    }
+    @Override
+    public String toString() {
+        if (hasCode) return mat.toString() + ":" + code;
+        return mat.toString();
+    }
+
+    public Boolean equals(CatMat that) {
+        if (that == null) return false;
+        if (this.hasCode || that.hasCode) {
+            return this.mat == that.mat && this.code == that.code;
+        }
+        return this.mat == that.mat;
+    }
+
+    public Boolean equals(Block blk) {
+        if (this.hasCode || blk.getData() > 0) return this.mat == blk.getType() && this.code == blk.getData();
+        return this.mat == blk.getType();
+    }
+
+    public Boolean is(Material that) {
+        return !this.hasCode && this.mat == that;
+    }
+
+    public void setBlock(Block blk) {
+        if (this.hasCode) blk.setTypeIdAndData(mat.getId(), this.code, false);
+        else blk.setType(mat);
+    }
+
+    public void getBlock(Block blk) {
+        Material m = blk.getType();
+        byte c = blk.getData();
+        if (c > 0) {
+            code = c;
+            hasCode = true;
+        } else {
+            code = -1;
+            hasCode = false;
+        }
+        mat = m;
+    }
+
+    public void get(CatMat that) {
+        hasCode = that.hasCode;
+        mat = that.mat;
+        code = that.code;
+    }
+
+    public byte getCode() {
+        return code;
+    }
+
+    public Boolean getHasCode() {
+        return hasCode;
+    }
+
+    public Material getMat() {
+        return mat;
+    }
 }

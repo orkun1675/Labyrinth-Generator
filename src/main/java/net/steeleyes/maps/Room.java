@@ -19,6 +19,8 @@
 */
 package net.steeleyes.maps;
 
+import net.steeleyes.data.Config;
+
 import java.util.List;
 import java.util.ArrayList;
 

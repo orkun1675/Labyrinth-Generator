@@ -19,186 +19,143 @@
 */
 package net.steeleyes.catacombs;
 
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.World;
-import org.bukkit.Material;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.block.Sign;
-import org.bukkit.inventory.InventoryHolder;
 
+public class BlockChangeHandler implements Runnable {
+    private int changed = 0;
 
-public class BlockChangeHandler implements Runnable {  
-  private final int MAX_CHANGE = 10000;
-  private int changed = 0;
-  
-  private Catacombs plugin;
-    
-  private final List<BlockChange> delay = new ArrayList<BlockChange>();
-  private final List<BlockChange> high  = new ArrayList<BlockChange>();
-  private final List<BlockChange> low   = new ArrayList<BlockChange>();
-  private final List<Player>      who   = new ArrayList<Player>();
+    private Catacombs plugin;
 
-  public BlockChangeHandler(Catacombs plugin) {
-    this.plugin = plugin;
-  }
+    private final List<BlockChange> delay = new ArrayList<>();
+    private final List<BlockChange> high = new ArrayList<>();
+    private final List<BlockChange> low = new ArrayList<>();
+    private final List<Player> who = new ArrayList<>();
 
-  private void setBlock(BlockChange x) {
-    Block blk = x.getBlk();   
-    try {
-      if (x.getCode() >= 0) {
-        blk.setTypeIdAndData(x.getMat().getId(), x.getCode(), false);
-      } else {
-        blk.setType(x.getMat());
-      }
-    } catch (Exception e) {
-      System.err.println("[Catacombs] Problem setting block " + blk + " " + x.getMat() + " " + x.getCode());
+    public BlockChangeHandler(Catacombs plugin) {
+        this.plugin = plugin;
     }
-    if(x.getItems() != null) {
-      if(blk.getState() instanceof InventoryHolder) {
-        InventoryHolder cont = (InventoryHolder) blk.getState();
-        Inventory inv = cont.getInventory();
-        for(ItemStack s: x.getItems()) {
-          inv.addItem(s);
+
+    private void setBlock(BlockChange x) {
+        Block blk = x.getBlk();
+        try {
+            blk.setType(x.getMat());
+            if (x.getCode() > 0) blk.setData(x.getCode(), true);
+        } catch (Exception e) {
+            System.err.println("[Catacombs] Problem setting block " + blk + " " + x.getMat() + " " + x.getCode());
         }
-        if(x.getMat() == Material.DISPENSER) {
-          delay.add(new BlockChange(blk,null,x.getCode()));
+
+        if (x.getItems() != null && blk.getState() instanceof InventoryHolder) {
+            InventoryHolder cont = (InventoryHolder) blk.getState();
+            Inventory inv = cont.getInventory();
+            for (ItemStack s : x.getItems()) inv.addItem(s);
+            if (x.getMat() == Material.DISPENSER) delay.add(new BlockChange(blk, null, x.getCode()));
         }
-      }  
-    }
-    if(x.getSpawner()!=null && blk.getState() instanceof CreatureSpawner) {
-      CreatureSpawner spawner = (CreatureSpawner) blk.getState();
-      spawner.setCreatureTypeByName(x.getSpawner());
-    }
-    if(x.hasLines() && blk.getState() instanceof Sign) {
-      Sign sign = (Sign) blk.getState();
-      for(int i=0;i<4;i++) {
-        String str = x.getLine(i);
-        if(str!=null) {
-          sign.setLine(i,str);
+
+        if (x.getSpawner() != null && blk.getState() instanceof CreatureSpawner) {
+            CreatureSpawner spawner = (CreatureSpawner) blk.getState();
+            spawner.setSpawnedType(x.getSpawner());
         }
-      }
-      sign.update(true);
+
+        if (x.hasLines() && blk.getState() instanceof Sign) {
+            Sign sign = (Sign) blk.getState();
+            for (int i = 0; i < 4; i++) {
+                String str = x.getLine(i);
+                if (str != null) sign.setLine(i, str);
+            }
+            sign.update(true);
+        }
     }
-  }
-  
-  @Override
-  public void run() {
-    
-    while(!delay.isEmpty()) {
-      BlockChange x = delay.remove(0);
-      x.getBlk().setData(x.getCode());   
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void run() {
+        int maxChanges = plugin.getCnf().getMaxChangesPerSecond();
+        while (!delay.isEmpty()) {
+            BlockChange x = delay.remove(0);
+            x.getBlk().setData(x.getCode());
+        }
+
+        int cnt = 0;
+        while (!high.isEmpty() && cnt < maxChanges) {
+            BlockChange x = high.remove(0);
+            setBlock(x);
+            cnt++;
+        }
+        if (cnt == 0)  // Only do low priority on a new tick
+            while (!low.isEmpty() && cnt < maxChanges) {
+                BlockChange x = low.remove(0);
+                setBlock(x);
+                cnt++;
+            }
+        if (cnt > 0) changed += cnt;
+        if (cnt == 0 && changed > 0) {
+            System.out.println("[Catacombs] Block Handler #changes=" + changed);
+            for (Player p : who) if (plugin != null) plugin.inform(p, "Catacomb changes complete");
+            who.clear();
+            changed = 0;
+        }
     }
-    
-    int cnt=0;
-    while(!high.isEmpty() && cnt < MAX_CHANGE) {
-      BlockChange x = high.remove(0);
-      setBlock(x);
-      cnt++;
+
+
+    // figure out a good way to avoid the long list of combinations here
+    public void add(BlockChange b, Position pos) {
+        if (pos == Position.LOW) low.add(b);
+        else high.add(b);
     }
-    if(cnt==0) { // Only do low priority on a new tick
-      while(!low.isEmpty() && cnt < MAX_CHANGE) {
-        BlockChange x = low.remove(0);
-        setBlock(x);
-        cnt++;
-      }
+
+    public void add(Block blk, Material mat, Position pos) {
+        add(new BlockChange(blk, mat), pos);
     }
-    if(cnt>0) {
-      changed += cnt;
+
+    public void add(Block blk, Material mat, byte code, Position pos) {
+        add(new BlockChange(blk, mat, code), pos);
     }
-    if(cnt == 0 && changed > 0) {
-      System.out.println("[Catacombs] Block Handler #changes="+changed);
-      for(Player p : who) {
-        if(plugin != null)
-          plugin.inform(p,"Catacomb changes complete");
-      }
-      who.clear();
-      changed = 0;
+
+
+    public void add(Block blk, Material mat, List<ItemStack> items, Position pos) {
+        add(new BlockChange(blk, mat, items), pos);
     }
-  }
-  
-  
-  
-  // figure out a good way to avoid the long list of combinations here
-  public void addLow(BlockChange b) {
-    low.add(b);
-  }
-  public void addHigh(BlockChange b) {
-    high.add(b);
-  }
-  public void addLow(Block blk,Material mat) {
-    low.add(new BlockChange(blk,mat));
-  }
-  public void addHigh(Block blk,Material mat) {
-    high.add(new BlockChange(blk,mat));
-  }
-  public void addLow(Block blk,Material mat, byte code) {
-    low.add(new BlockChange(blk,mat,code));
-  }
-  public void addHigh(Block blk,Material mat, byte code) {
-    high.add(new BlockChange(blk,mat,code));
-  }
-  public void addLow(Block blk,Material mat,List<ItemStack> items) {
-    low.add(new BlockChange(blk,mat,items));
-  }
-  public void addHigh(Block blk,Material mat,List<ItemStack> items) {
-    high.add(new BlockChange(blk,mat,items));
-  }
-  public void addLow(Block blk,Material mat,byte code,List<ItemStack> items) {
-    BlockChange ch = new BlockChange(blk,mat,code);
-    ch.setItems(items);
-    low.add(ch);
-  }
-  public void addHigh(Block blk,Material mat,byte code,List<ItemStack> items) {
-    BlockChange ch = new BlockChange(blk,mat,code);
-    ch.setItems(items);
-    high.add(ch);
-  }
-  
-  
-  public void addLow(World world,int x,int y,int z,Material mat) {
-    Block blk = world.getBlockAt(x,y,z);
-    low.add(new BlockChange(blk,mat));
-  }
-  public void addHigh(World world,int x,int y,int z,Material mat) {
-    Block blk = world.getBlockAt(x,y,z);
-    high.add(new BlockChange(blk,mat));
-  }
-  public void addLow(World world,int x,int y,int z,Material mat,byte code) {
-    Block blk = world.getBlockAt(x,y,z);
-    low.add(new BlockChange(blk,mat,code));
-  }
-  public void addHigh(World world,int x,int y,int z,Material mat,byte code) {
-    Block blk = world.getBlockAt(x,y,z);
-    high.add(new BlockChange(blk,mat,code));
-  }  
-  public void addLow(World world,int x,int y,int z,Material mat,List<ItemStack> items) {
-    Block blk = world.getBlockAt(x,y,z);
-    low.add(new BlockChange(blk,mat,items));
-  }
-  public void addHigh(World world,int x,int y,int z,Material mat,List<ItemStack> items) {
-    Block blk = world.getBlockAt(x,y,z);
-    high.add(new BlockChange(blk,mat,items));
-  }
-  public void addLow(World world,int x,int y,int z,Material mat,byte code,List<ItemStack> items) {
-    Block blk = world.getBlockAt(x,y,z);
-    BlockChange ch = new BlockChange(blk,mat,code);
-    ch.setItems(items);
-    low.add(ch);
-  }
-  public void addHigh(World world,int x,int y,int z,Material mat,byte code,List<ItemStack> items) {
-    Block blk = world.getBlockAt(x,y,z);
-    BlockChange ch = new BlockChange(blk,mat,code);
-    ch.setItems(items);
-    high.add(ch);
-  }
-  
-  public void add(Player player) {
-    who.add(player);
-  } 
+
+
+    public void add(Block blk, Material mat, byte code, List<ItemStack> items, Position pos) {
+        BlockChange ch = new BlockChange(blk, mat, code);
+        ch.setItems(items);
+        add(ch, pos);
+    }
+
+
+    public void add(World world, int x, int y, int z, Material mat, Position pos) {
+        add(new BlockChange(world.getBlockAt(x, y, z), mat), pos);
+    }
+
+    public void add(World world, int x, int y, int z, Material mat, byte code, Position pos) {
+        add(new BlockChange(world.getBlockAt(x, y, z), mat, code), pos);
+    }
+
+    public void add(World world, int x, int y, int z, Material mat, List<ItemStack> items, Position pos) {
+        add(new BlockChange(world.getBlockAt(x, y, z), mat, items), pos);
+    }
+
+
+    public void add(World world, int x, int y, int z, Material mat, byte code, List<ItemStack> items,Position pos) {
+        BlockChange ch = new BlockChange(world.getBlockAt(x, y, z), mat, code);
+        ch.setItems(items);
+        add(ch, pos);
+    }
+
+    public void add(Player player) {
+        who.add(player);
+    }
 }

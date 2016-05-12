@@ -19,19 +19,16 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Players {
-  public final Map<Player,CatPlayer> players = new HashMap<Player,CatPlayer>();
+  public final Map<Player,CatPlayer> players = new HashMap<>();
   
-  public final Map<Player,CatGear> gear = new HashMap<Player,CatGear>();
-  
-  public Boolean isManaged(Player p) {
-    return players.containsKey(p);
-  }
+  public final Map<Player,CatGear> gear = new HashMap<>();
   
   public Boolean hasGear(Player player) {
     return gear.containsKey(player);
@@ -70,9 +67,7 @@ public class Players {
   }
   
   public Location getRespawn(Player player) {
-    if(players.containsKey(player)) {
-      return players.get(player).getRespawn();
-    }
+    if(players.containsKey(player))       return players.get(player).getRespawn();
     return null;
   }
   

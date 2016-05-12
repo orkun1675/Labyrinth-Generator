@@ -17,29 +17,23 @@
  * @copyright Copyright (C) 2011
  * @license GNU GPL <http://www.gnu.org/licenses/>
 */
-package net.steeleyes.catacombs;
+package net.steeleyes.data;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class CatLootList {
-    private final List<String> list = new ArrayList<>();
-    private String name;
-
-    public CatLootList(FileConfiguration fcnf, String name, String path) {
-        this.name = name;
-        List<String> l = fcnf.getStringList(path);
-        if (l != null) for (String str : l) list.add(str);
-    }
-
-    @Override
-    public String toString() {
-        return name + " " + list;
-    }
-
-    public void add(String str) {
-        list.add(str);
-    }
+public interface IConfig {
+  public  Boolean MedHalfEmpty();
+  public  Boolean SandChance();
+  public  Boolean ChestChance();
+  public  Boolean SpawnerChance();
+  public  Boolean EnchantChance();
+  public  Boolean TrapChance();
+  public  Boolean PoolChance();
+  public  Boolean FullPoolChance();
+  public  Boolean SpecialChance();
+  public  Boolean CorridorChance();
+  public  Boolean ShroomChance();
+  public  Boolean BenchChance();
+  public  Boolean AnvilChance();
+  public  Boolean OvenChance();
+  public  Boolean DoubleDoorChance();
+  
 }

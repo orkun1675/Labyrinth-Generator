@@ -19,8 +19,11 @@
 */
 package net.steeleyes.catacombs;
 
+import net.steeleyes.data.CatSQL;
+
 import java.sql.ResultSet;
 
+@SuppressWarnings({"rawtypes", "unused"})
 public class CatFlag {
 
   public enum Type {
@@ -33,7 +36,7 @@ public class CatFlag {
     FLOOR(String.class),
     OWNER(String.class);
     
-    private Class c;
+	private Class c;
 
     private Type(Class c) {
       this.c = c;

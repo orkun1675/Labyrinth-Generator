@@ -26,6 +26,7 @@ import java.util.EnumMap;
 import java.util.ArrayList;
 import java.util.Random;
 
+@SuppressWarnings({"unused", "incomplete-switch"})
 public class PrePlanned {   
   private Grid grid;
   private String name;

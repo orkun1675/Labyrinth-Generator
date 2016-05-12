@@ -22,7 +22,8 @@ package net.steeleyes.catacombs;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class CatAbility {
-  private static final int FAR  = 30;
+  @SuppressWarnings("unused")
+private static final int FAR  = 30;
   
   private EffectType effect;
   private AreaType area;
@@ -277,7 +278,8 @@ public class CatAbility {
     // snapshot targets details into the mob using the ability
   }    
 
-  private void startCasting(CatMob mob) {
+  @SuppressWarnings("unused")
+private void startCasting(CatMob mob) {
     // clear interrupted
 
     // if after==0
@@ -291,7 +293,8 @@ public class CatAbility {
     //   capture focus info
    }
   
-  private void endCasting(CatMob mob) {
+  @SuppressWarnings("unused")
+private void endCasting(CatMob mob) {
     // cancel if interrupted
     // capture target info
     // Inform nearby players

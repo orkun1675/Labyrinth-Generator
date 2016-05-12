@@ -19,7 +19,6 @@
 */
 package net.steeleyes.catacombs;
 
-import java.util.Calendar;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -29,10 +28,8 @@ public class Mob {
   private MobType type=null;
   private int hps;
   Boolean notify = false;
-  
-  private long gotHit=0;
-  
-  public Mob(MobType type, Location loc) {
+
+    public Mob(MobType type, Location loc) {
     this.type = type;
     ent = type.spawn(loc);
     hps = type.getHps();
@@ -55,15 +52,10 @@ public class Mob {
   }
   
   public void damage(EntityDamageEvent evt) {
-    gotHit = Calendar.getInstance().getTimeInMillis();
-    hps = (int) (hps - evt.getDamage()); // TODO: verify cast
-    //System.out.println("[Catacombs] "+type.getName()+" dmg="+evt.getDamage()+" hps="+hps);
+    hps = ((Double)(hps - evt.getDamage())).intValue();
     evt.setDamage(1);
-    if(hps<=0) {
-      ent.setHealth(1); 
-    } else {
-      ent.setHealth(ent.getMaxHealth());
-    }
+    if(hps<=0)       ent.setHealth(1);
+    else       ent.setHealth(ent.getMaxHealth());
   }
   
   public Boolean isDead() {
