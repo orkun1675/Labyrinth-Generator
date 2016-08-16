@@ -19,11 +19,11 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class Players {
   public final Map<Player,CatPlayer> players = new HashMap<>();

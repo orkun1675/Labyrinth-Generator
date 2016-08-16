@@ -19,8 +19,15 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,11 +39,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 @SuppressWarnings("deprecation")
 public class CatUtils {
@@ -135,11 +141,15 @@ public class CatUtils {
 
     public static LivingEntity getDamager(EntityDamageEvent evt) {
         Entity damager = null;
-
         if (evt instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) evt;
             damager = e.getDamager();
-            if (damager instanceof Projectile) damager = (Entity) ((Projectile) damager).getShooter();
+            if (damager instanceof Projectile) {
+            	ProjectileSource pSource =  ((Projectile) damager).getShooter();
+            	if (pSource instanceof Entity) {
+            		damager = (Entity) pSource;
+            	}
+            }
         }
         if (damager instanceof LivingEntity) return (LivingEntity) damager;
         return null;

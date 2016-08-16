@@ -4,7 +4,12 @@ package net.steeleyes.catacombs;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Slime;
+import org.bukkit.entity.Wolf;
 
 public enum MobShape {
     // Standard creatures
@@ -43,9 +48,8 @@ public enum MobShape {
         return type;
     }
 
-    @SuppressWarnings("deprecation")
     public LivingEntity spawn(World world, Location loc) {
-        LivingEntity e = world.spawnCreature(loc, type);
+        LivingEntity e = (LivingEntity) world.spawnEntity(loc, type);
         return spawn(e);
     }
 

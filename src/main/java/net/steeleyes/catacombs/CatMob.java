@@ -19,14 +19,18 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
+import java.util.Calendar;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
-
-import java.util.Calendar;
 
 @SuppressWarnings("unused")
 public class CatMob {

@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -64,7 +65,7 @@ public class CatSQL {
         System.out.println("[Catacombs] "+cmd);
       } else {
         Statement stat = conn.createStatement();
-        int res = stat.executeUpdate(cmd);
+        stat.executeUpdate(cmd);
         stat.close();
       }
     } catch (Exception e) {
@@ -258,7 +259,7 @@ public class CatSQL {
             CatCuboid.Type t = (hut==1)?CatCuboid.Type.HUT:CatCuboid.Type.LEVEL;
             CatCuboid cube = new CatCuboid(world,xl,yl,zl,xh,yh,zh,t);
             if(ex==0 && ey==0 && ez==0) {
-              Vector v = cube.guessEndLocation();
+              CatVector v = cube.guessEndLocation();
               if(v!=null) {
                 ex = v.x;
                 ey = v.y;

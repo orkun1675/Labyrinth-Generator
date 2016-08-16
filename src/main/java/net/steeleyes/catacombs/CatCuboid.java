@@ -19,7 +19,10 @@
 */
 package net.steeleyes.catacombs;
 
-import com.statiocraft.fix.net.steeleyes.catacombs.CatCuboid.scCatCuboid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -35,9 +38,7 @@ import org.bukkit.material.Bed;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.statiocraft.fix.net.steeleyes.catacombs.CatCuboid.scCatCuboid;
 
 @SuppressWarnings("deprecation")
 public class CatCuboid extends Cuboid {
@@ -114,16 +115,16 @@ public class CatCuboid extends Cuboid {
         return max_depth;
     }
 
-    public Vector guessEndLocation() {
+    public CatVector guessEndLocation() {
         // Look for a ladder down first
         for (int x = xl; x <= xh; x++)
             for (int z = zl; z <= zh; z++)
-                if (world.getBlockAt(x, yl, z).getType() == Material.LADDER) return new Vector(x, yl - 1, z);
+                if (world.getBlockAt(x, yl, z).getType() == Material.LADDER) return new CatVector(x, yl - 1, z);
         // If no ladder down then look for the end chest
         for (int x = xl; x <= xh; x++)
             for (int z = zl; z <= zh; z++)
                 for (int y = yl; y <= yh; y++)
-                    if (isBigChest(world.getBlockAt(x, y, z))) return new Vector(x, yl - 1, z);
+                    if (isBigChest(world.getBlockAt(x, y, z))) return new CatVector(x, yl - 1, z);
         return null;
     }
 

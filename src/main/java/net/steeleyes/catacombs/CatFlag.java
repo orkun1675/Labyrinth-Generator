@@ -19,9 +19,9 @@
 */
 package net.steeleyes.catacombs;
 
-import net.steeleyes.data.CatSQL;
-
 import java.sql.ResultSet;
+
+import net.steeleyes.data.CatSQL;
 
 @SuppressWarnings({"rawtypes", "unused"})
 public class CatFlag {

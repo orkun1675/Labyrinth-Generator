@@ -19,15 +19,16 @@
 */
 package net.steeleyes.data;
 
-import net.steeleyes.maps.Square;
-import org.bukkit.configuration.file.FileConfiguration;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@SuppressWarnings({"unused", "rawtypes"})
+import org.bukkit.configuration.file.FileConfiguration;
+
+import net.steeleyes.maps.Square;
+
+@SuppressWarnings({"rawtypes"})
 public class Config implements IConfig {
     protected static FileConfiguration fcnf;
     protected static final String def_style = "catacomb";

@@ -19,10 +19,12 @@
 */
 package net.steeleyes.catacombs;
 
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
-import net.steeleyes.data.CatSQL;
-import net.steeleyes.maps.Direction;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.HashSet;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -35,11 +37,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.util.HashSet;
-import java.util.List;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
+import net.steeleyes.data.CatSQL;
+import net.steeleyes.maps.Direction;
 
 /**
  * Release v3.4 ~ Edited version of 3.3 by jeussa
@@ -744,7 +745,8 @@ public class Catacombs extends JavaPlugin {
                 if (p != null) {
                     String pname = p.getName();
                     if (economy != null) {
-                        double bal = economy.getBalance(pname);
+                        @SuppressWarnings("deprecation")
+						double bal = economy.getBalance(pname);
                         inform(p, "You have " + economy.format(bal));
                     }
                 }

@@ -19,6 +19,9 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -28,9 +31,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.plugin.PluginManager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Clan implements Listener {
     private Catacombs plugin;

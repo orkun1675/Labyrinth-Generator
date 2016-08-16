@@ -20,13 +20,13 @@
 
 package net.steeleyes.data;
 
-import net.steeleyes.catacombs.CatMat;
-import net.steeleyes.data.IConfig;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 
-import java.util.List;
+import net.steeleyes.catacombs.CatMat;
 
 public interface ICatConfig extends IConfig {
     public Integer RadiusMax();

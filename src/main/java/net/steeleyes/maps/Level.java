@@ -19,10 +19,10 @@
 */
 package net.steeleyes.maps;
 
-import net.steeleyes.data.Config;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import net.steeleyes.data.Config;
 
 @SuppressWarnings("unused")
 public class Level {

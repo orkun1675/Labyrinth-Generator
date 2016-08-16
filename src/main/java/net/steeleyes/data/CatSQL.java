@@ -19,19 +19,20 @@
 */
 package net.steeleyes.data;
 
-import net.steeleyes.catacombs.CatCuboid;
-import net.steeleyes.catacombs.CatMat;
-import net.steeleyes.catacombs.Catacombs;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.util.Vector;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+
+import net.steeleyes.catacombs.CatCuboid;
+import net.steeleyes.catacombs.CatMat;
+import net.steeleyes.catacombs.CatVector;
+import net.steeleyes.catacombs.Catacombs;
 
 public class CatSQL {
 
@@ -232,11 +233,11 @@ public class CatSQL {
                         CatCuboid.Type t = (hut == 1) ? CatCuboid.Type.HUT : CatCuboid.Type.LEVEL;
                         CatCuboid cube = new CatCuboid(world, xl, yl, zl, xh, yh, zh, t);
                         if (ex == 0 && ey == 0 && ez == 0) {
-                            Vector v = cube.guessEndLocation();
+                            CatVector v = cube.guessEndLocation();
                             if (v != null) {
-                                ex = v.getBlockX();
-                                ey = v.getBlockY();
-                                ez = v.getBlockZ();
+                                ex = v.x;
+                                ey = v.y;
+                                ez = v.z;
                                 System.out.println("[Catacombs]     end location for legacy level = " + v);
                             } else
                                 System.err.println("[Catacombs] Can't find end location for level in '" + dname + "'");

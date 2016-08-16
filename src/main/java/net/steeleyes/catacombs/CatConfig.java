@@ -19,16 +19,17 @@
 */
 package net.steeleyes.catacombs;
 
-import net.steeleyes.data.Config;
-import net.steeleyes.data.ECatConfig;
-import net.steeleyes.data.ICatConfig;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.steeleyes.data.Config;
+import net.steeleyes.data.ECatConfig;
+import net.steeleyes.data.ICatConfig;
 
 public class CatConfig extends Config implements ICatConfig {
 

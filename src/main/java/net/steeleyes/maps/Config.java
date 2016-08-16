@@ -133,24 +133,14 @@ public class Config implements IConfig {
       try {
         String tmp[] = loot.split(":");
         String matName = tmp[0];
-        short code=0;
 
         if(matName.contains("/")) {
           String mat[] = matName.split("/");
           matName = mat[0];
-          code = Short.parseShort(mat[1]);
         }
         Material m = Material.matchMaterial(matName);
         if(m==null)
           throw new RuntimeException("Unknown material '"+matName+"' must be a number or a valid bukkit material name");
-
-        int pct = Integer.parseInt(tmp[1]);
-
-        String rng[] = tmp[2].split("-");
-        int min = Integer.parseInt(rng[0]);
-        int max = min;
-        if(rng.length > 1)
-          max = Integer.parseInt(rng[1]);
         
       } catch (ArrayIndexOutOfBoundsException e) {
         System.err.println("[Catacombs] Wrong format expecting this 'dirt:45:1' or 'dirt:45:1-6' found '"+loot+"'");
@@ -300,7 +290,7 @@ public class Config implements IConfig {
     Object o = getSP(path);
     ArrayList<Boolean> res = new ArrayList<Boolean>();
     if(o instanceof List) {
-      for(Object i:(List)o) { 
+      for(Object i:(List<?>)o) { 
         if(i instanceof Boolean) {
           res.add((Boolean)i);
         } else {
@@ -317,7 +307,7 @@ public class Config implements IConfig {
     Object o = getSP(path);
     ArrayList<Integer> res = new ArrayList<Integer>();
     if(o instanceof List) {
-      for(Object i:(List)o) { 
+      for(Object i:(List<?>)o) { 
         if(i instanceof Integer) {
           res.add((Integer)i);
         } else if(i instanceof Double) {
@@ -336,7 +326,7 @@ public class Config implements IConfig {
     Object o = getSP(path);
     ArrayList<Double> res = new ArrayList<Double>();
     if(o instanceof List) {
-      for(Object i:(List)o) { 
+      for(Object i:(List<?>)o) { 
         if(i instanceof Double) {
           res.add((Double)i);
         } else if(i instanceof Integer) {
@@ -355,7 +345,7 @@ public class Config implements IConfig {
     Object o = getSP(path);
     ArrayList<String> res = new ArrayList<String>();
     if(o instanceof List) {
-      for(Object i:(List)o) { 
+      for(Object i:(List<?>)o) { 
         if(i instanceof String) {
           res.add((String)i);
         } else {

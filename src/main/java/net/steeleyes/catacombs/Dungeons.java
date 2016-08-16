@@ -19,16 +19,17 @@
 */
 package net.steeleyes.catacombs;
 
-import net.steeleyes.data.CatSQL;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.bukkit.World;
+import org.bukkit.block.Block;
+
+import net.steeleyes.data.CatSQL;
 
 public class Dungeons {
     private final HashMap<String, Dungeon> dungeons = new HashMap<>();

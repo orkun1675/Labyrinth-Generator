@@ -19,10 +19,10 @@
 */
 package net.steeleyes.maps;
 
-import net.steeleyes.data.Config;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import net.steeleyes.data.Config;
 
 // For efficency avoid using Vector2D internal to this class
 public class Room {

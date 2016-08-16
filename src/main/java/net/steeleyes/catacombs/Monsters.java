@@ -23,92 +23,90 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.inventory.ItemStack;
 
 public class Monsters {
-  private static final long HEAL_PLAYER = 2500;
-  private static final long SWING_PLAYER = 1900;
-  private static final long SWING_MONSTER = 1900*2;
-  
-  private Catacombs plugin;
-  
-  private Map<LivingEntity,CatMob> monsters = new HashMap<LivingEntity,CatMob>();
-  private Map<LivingEntity,Long> last_strike = new HashMap<LivingEntity,Long>();
-  
-  public Monsters(Catacombs plugin) {
-    this.plugin = plugin;
-  }
-  
-  public Boolean isManaged(LivingEntity ent) {
-    return monsters.containsKey(ent);
-  }
-  
-  public void add(CatMob mob) {
-    monsters.put(mob.getEntity(),mob); 
-  }
-  
-  public void remove(LivingEntity ent) {
-    monsters.remove(ent);
-  }  
-  public CatMob get(LivingEntity ent) {
-    return monsters.get(ent);
-  }
-  
-  public int size() {
-    return monsters.size();
-  }
-  
-  // ToDo: remove player threat more efficiently than this
-  public void removeThreat(Player player) {
-    for(Entry<LivingEntity,CatMob> e:monsters.entrySet()) {
-      e.getValue().removeThreat(player);
-    } 
-  }
-  
-  public class WildResp {
-    public Boolean wild;
-    public long delta;
-    public WildResp(Boolean wild, long delta) {
-      this.wild = wild;
-      this.delta = delta;
-    }
-  }
-  
-  public WildResp isWild(LivingEntity damager, long swing,CatMob mob) {
-    int pct = (mob==null)?0:mob.getHealth();
-    Boolean wild = false;
-    long delta = 0;
-    long now = Calendar.getInstance().getTimeInMillis();
-    long new_time = now;
-    if(last_strike.containsKey(damager)) {
-      long then = last_strike.get(damager);
-      delta = now-then;
-      if(delta < swing) {
-        if(damager instanceof Player) {
-          //((Player)damager).sendMessage(String.format(ChatColor.DARK_GRAY+"(%.3f <  %.3f) WILD %3d%%"+ChatColor.WHITE, (float)delta/1000.0, (float)swing/1000.0,pct));
-          new_time = now-(swing/2);
-        } else {
-          new_time = then;
-        }
-        wild = true;
-      } else {
-        //if(damager instanceof Player) {
-        //  ((Player)damager).sendMessage(String.format("(%.3f >= %.3f)     %3d%%", (float)delta/1000.0, (float)swing/1000.0,pct));
-        //}        
-      }
-    }
-    last_strike.put(damager,new_time);
-    return new WildResp(wild,delta);
-  }
-  
+	//private static final long HEAL_PLAYER = 2500;
+	//private static final long SWING_PLAYER = 1900;
+	//private static final long SWING_MONSTER = 1900*2;
+
+	//private Catacombs plugin;
+
+	private Map<LivingEntity,CatMob> monsters = new HashMap<LivingEntity,CatMob>();
+	private Map<LivingEntity,Long> last_strike = new HashMap<LivingEntity,Long>();
+
+	/*
+	public Monsters(Catacombs plugin) {
+		this.plugin = plugin;
+	}
+	*/
+
+	public Boolean isManaged(LivingEntity ent) {
+		return monsters.containsKey(ent);
+	}
+
+	public void add(CatMob mob) {
+		monsters.put(mob.getEntity(),mob); 
+	}
+
+	public void remove(LivingEntity ent) {
+		monsters.remove(ent);
+	}  
+	public CatMob get(LivingEntity ent) {
+		return monsters.get(ent);
+	}
+
+	public int size() {
+		return monsters.size();
+	}
+
+	// ToDo: remove player threat more efficiently than this
+	public void removeThreat(Player player) {
+		for(Entry<LivingEntity,CatMob> e:monsters.entrySet()) {
+			e.getValue().removeThreat(player);
+		} 
+	}
+
+	public class WildResp {
+		public Boolean wild;
+		public long delta;
+		public WildResp(Boolean wild, long delta) {
+			this.wild = wild;
+			this.delta = delta;
+		}
+	}
+
+	public WildResp isWild(LivingEntity damager, long swing,CatMob mob) {
+		//int pct = (mob==null)?0:mob.getHealth();
+		Boolean wild = false;
+		long delta = 0;
+		long now = Calendar.getInstance().getTimeInMillis();
+		long new_time = now;
+		if(last_strike.containsKey(damager)) {
+			long then = last_strike.get(damager);
+			delta = now-then;
+			if(delta < swing) {
+				if(damager instanceof Player) {
+					//((Player)damager).sendMessage(String.format(ChatColor.DARK_GRAY+"(%.3f <  %.3f) WILD %3d%%"+ChatColor.WHITE, (float)delta/1000.0, (float)swing/1000.0,pct));
+					new_time = now-(swing/2);
+				} else {
+					new_time = then;
+				}
+				wild = true;
+			} else {
+				//if(damager instanceof Player) {
+				//  ((Player)damager).sendMessage(String.format("(%.3f >= %.3f)     %3d%%", (float)delta/1000.0, (float)swing/1000.0,pct));
+				//}        
+			}
+		}
+		last_strike.put(damager,new_time);
+		return new WildResp(wild,delta);
+	}
+
+	/*
   public void playerHeals(CatConfig cnf,Player healer, Player healee) {
     if(!healee.isDead()){
       WildResp resp = isWild(healer,HEAL_PLAYER,null);
@@ -134,29 +132,31 @@ public class Monsters {
       }
     }
   }
-  
+	 */
+
+	/*
   public void monsterHits(CatConfig cnf, EntityDamageEvent evt) {
     LivingEntity damagee = (LivingEntity) evt.getEntity();
     LivingEntity damager = CatUtils.getDamager(evt);
-    
+
     if(damager == null)
       return;
-    
+
     assert(damagee instanceof Player);
     DamageCause cause = evt.getCause();
     if(cause == DamageCause.PROJECTILE)
       return;
-   
+
     CatMob mob = monsters.get(damager);
     if(mob != null)
       mob.canHit();
-    
+
     WildResp resp = isWild(damager,SWING_MONSTER,null);
     if(resp.wild) {
       evt.setCancelled(true);
       return;
     }
-    
+
     if(false) {
       final int num = CatUtils.armourPoints(((Player)damagee));
       final Player pp = (Player) damagee;
@@ -172,13 +172,15 @@ public class Monsters {
       }, 1);
     }
   }
-  
+	 */
+
+	/*
   public void playerHits(CatConfig cnf,EntityDamageEvent evt) {
     LivingEntity damagee = (LivingEntity) evt.getEntity();
     CatMob mob = monsters.get(damagee);
     LivingEntity damager = (LivingEntity) CatUtils.getDamager(evt);
     int dmg = (int) evt.getDamage(); // TODO: verify cast
-        
+
     evt.setDamage(1);
     if(damager instanceof Player) {
       Player player = (Player) damager;
@@ -228,24 +230,25 @@ public class Monsters {
         evt.setDamage(100);
     }
   }
-  
-  public void splashThreat(LivingEntity around, LivingEntity attacker, int dmg, int threat, int h, int v) {
-    for(Entity e : around.getNearbyEntities(h,v,h)) {
-      if(e instanceof LivingEntity) {
-        CatMob other = monsters.get((LivingEntity)e);
-        if(other!=null) {
-          if(other.hit(attacker,dmg,threat)) {
-            dmg = 100;
-          } else {
-            dmg = 1;
-          }
-          LivingEntity ent = (LivingEntity)e;
-          //System.out.println("[Catacombs] Splash "+threat+" "+other);
-          ent.setHealth(ent.getMaxHealth());
-          ent.damage(dmg); // Make the mob go red
-        }
-      }
-    }    
-  }
+	 */
+
+	public void splashThreat(LivingEntity around, LivingEntity attacker, int dmg, int threat, int h, int v) {
+		for(Entity e : around.getNearbyEntities(h,v,h)) {
+			if(e instanceof LivingEntity) {
+				CatMob other = monsters.get((LivingEntity)e);
+				if(other!=null) {
+					if(other.hit(attacker,dmg,threat)) {
+						dmg = 100;
+					} else {
+						dmg = 1;
+					}
+					LivingEntity ent = (LivingEntity)e;
+					//System.out.println("[Catacombs] Splash "+threat+" "+other);
+					ent.setHealth(ent.getMaxHealth());
+					ent.damage(dmg); // Make the mob go red
+				}
+			}
+		}    
+	}
 
 }

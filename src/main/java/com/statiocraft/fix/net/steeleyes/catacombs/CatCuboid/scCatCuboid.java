@@ -1,11 +1,12 @@
 package com.statiocraft.fix.net.steeleyes.catacombs.CatCuboid;
 
-import net.steeleyes.catacombs.CatCuboid;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import net.steeleyes.catacombs.CatCuboid;
 
 public class scCatCuboid {
 

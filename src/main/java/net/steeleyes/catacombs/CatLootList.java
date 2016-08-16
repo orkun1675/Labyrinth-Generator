@@ -19,10 +19,10 @@
 */
 package net.steeleyes.catacombs;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class CatLootList {
     private final List<String> list = new ArrayList<>();

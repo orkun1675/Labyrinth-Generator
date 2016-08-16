@@ -21,8 +21,10 @@
 package net.steeleyes.catacombs;
 
 import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+
 import net.steeleyes.maps.IConfig;
 
 public interface ICatConfig extends IConfig { 

@@ -19,8 +19,10 @@
 */
 package net.steeleyes.catacombs;
 
-import net.steeleyes.data.CatSQL;
-import net.steeleyes.maps.*;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -29,9 +31,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import net.steeleyes.data.CatSQL;
+import net.steeleyes.maps.Direction;
+import net.steeleyes.maps.Grid;
+import net.steeleyes.maps.Level;
+import net.steeleyes.maps.PrePlanned;
+import net.steeleyes.maps.Square;
 
 @SuppressWarnings({"unused", "incomplete-switch"})
 public class CatLevel {

@@ -20,9 +20,10 @@
 
 package net.steeleyes.catacombs;
 
-public class Vector {
+public class CatVector {
   public int x,y,z;
-  public Vector(int x, int y, int z) {
+  
+  public CatVector(int x, int y, int z) {
     this.x = x;
     this.y = y;
     this.z = z;

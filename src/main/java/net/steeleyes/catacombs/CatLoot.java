@@ -20,18 +20,19 @@
 
 package net.steeleyes.catacombs;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.Potion;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class CatLoot {
     public static void fillChest(Inventory inv, List<String> list) {
@@ -147,9 +148,7 @@ public class CatLoot {
                     } else for (PotionType ptv : PotionType.values())
                         if (ptv.name().equalsIgnoreCase(pa[0])) try {
                             Integer lvl = Integer.parseInt(pa[1]);
-                            if (lvl > 2) lvl = 2;
-                            if (lvl < 1) lvl = 1;
-                            new Potion(ptv, lvl).apply(i);
+                            ((PotionMeta) im).setBasePotionData(new PotionData(ptv, false, lvl > 1));
                             break;
                         } catch (Exception ignored) {
                         }

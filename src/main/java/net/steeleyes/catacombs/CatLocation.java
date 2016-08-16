@@ -19,10 +19,11 @@
 */
 package net.steeleyes.catacombs;
 
-import net.steeleyes.data.CatSQL;
+import java.sql.ResultSet;
+
 import org.bukkit.util.Vector;
 
-import java.sql.ResultSet;
+import net.steeleyes.data.CatSQL;
 
 public class CatLocation {
     private Vector loc;

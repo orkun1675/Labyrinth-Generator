@@ -20,12 +20,12 @@
 
 package net.steeleyes.catacombs;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 
 public class BlockChange {

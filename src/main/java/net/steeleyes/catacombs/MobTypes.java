@@ -19,11 +19,15 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.util.*;
 
 public class MobTypes {
 
@@ -87,7 +91,7 @@ public class MobTypes {
                     String path = "monster." + mob;
                     String shape = fcnf.getString(path + ".shape");
                     int hps = fcnf.getInt(path + ".hps");
-                    String gold = fcnf.getString(path + ".gold");
+                    //String gold = fcnf.getString(path + ".gold");
                     List<CatAbility> ability_list = new LinkedList<CatAbility>();
                     for (String abil : fcnf.getStringList(path + ".abilities")) {
                         if (abilities.containsKey(abil)) {

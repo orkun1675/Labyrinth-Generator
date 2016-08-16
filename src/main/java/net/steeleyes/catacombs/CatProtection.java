@@ -19,8 +19,8 @@
 */
 package net.steeleyes.catacombs;
 
-import org.bukkit.block.Block;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 
 interface CatProtection {
   Boolean isProtected(Block blk);

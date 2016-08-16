@@ -19,9 +19,6 @@ along with Catacombs.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.steeleyes.catacombs;
 
-import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
-
 import java.util.List;
 //  ZOMBIE        (CreatureType.ZOMBIE,50),
 //  SKELETON      (CreatureType.SKELETON,40),
@@ -44,6 +41,9 @@ import java.util.List;
 //
 //  // Special creatures
 //  POWEREDCREEPER(CreatureType.CREEPER,12);
+
+import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 
 public class MobType {
   private int hps;

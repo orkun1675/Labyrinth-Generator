@@ -19,6 +19,9 @@
 */
 package net.steeleyes.catacombs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -28,9 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class BlockChangeHandler implements Runnable {
@@ -47,7 +47,8 @@ public class BlockChangeHandler implements Runnable {
         this.plugin = plugin;
     }
 
-    private void setBlock(BlockChange x) {
+    @SuppressWarnings("deprecation")
+	private void setBlock(BlockChange x) {
         Block blk = x.getBlk();
         try {
             blk.setType(x.getMat());
